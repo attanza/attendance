@@ -1,17 +1,19 @@
-FROM node:18-alpine
-
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
-
-WORKDIR /home/node/app
-
+FROM node:18-alpine AS development
+WORKDIR "/usr/src/app"
 COPY package*.json ./
-
-USER node
-
 RUN npm install
 
-COPY --chown=node:node . .
+COPY . .
+RUN npm run build
 
-EXPOSE 8080
-
-CMD [ "node", "index.js" ]
+FROM node:18-alpine AS production
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+ENV PORT=10000
+WORKDIR "/usr/src/app"
+COPY package*.json ./
+RUN npm install --only=prod
+COPY . .
+COPY --from=development  "/usr/src/app/dist" "./dist"
+EXPOSE 10000
+CMD ["node", "dist/main"]
