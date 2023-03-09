@@ -7,8 +7,7 @@ import { getToken } from './getToken.js';
 export const checkInOffice = async () => {
   try {
     const token = await getToken();
-    // const today = moment().format('YYYY-MM-DD');
-    const today = '2023-02-12';
+    const today = moment().format('YYYY-MM-DD');
     const hour = '07';
     const minute = randTime(10, 28);
     const seconds = randTime(10, 55);
