@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import 'dotenv/config';
 import { checkInOffice } from './libs/checkInOffice.js';
 import { workDay } from './libs/workDay.js';
+import { checkOutOffice } from './libs/checkOutOffice.js';
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minutes
@@ -19,10 +20,24 @@ app.use(helmet());
 app.use(limiter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
-app.post('/attendance', async (req, res) => {
+app.post('/check-in', async (req, res) => {
   try {
     if (workDay()) {
       const resp = await checkInOffice();
+      res.json(resp);
+    } else {
+      res.send('not working day');
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+app.post('/check-out', async (req, res) => {
+  try {
+    if (workDay()) {
+      const resp = await checkOutOffice();
       res.json(resp);
     } else {
       res.send('not working day');
