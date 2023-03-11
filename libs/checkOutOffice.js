@@ -1,11 +1,14 @@
 import axios from 'axios';
 import FormData from 'form-data';
-
+import moment from 'moment';
+import { randTime } from './randTime.js';
+import { getToken } from './getToken.js';
 export const checkOutOffice = async () => {
   try {
     const data = new FormData();
 
-    const today = moment().format('YYYY-MM-DD');
+    // const today = moment().format('YYYY-MM-DD');
+    const today = '2023-03-10';
     const hour = randTime(17, 20);
     const minute = randTime(10, 55);
     const seconds = randTime(10, 55);
@@ -50,7 +53,7 @@ export const checkOutOffice = async () => {
     const resp = await axios(config).then((res) => res.data);
     return resp;
   } catch (error) {
-    console.log(error.data);
+    console.log(error);
     throw error;
   }
 };
