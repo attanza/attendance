@@ -7,8 +7,7 @@ export const checkOutOffice = async () => {
   try {
     const data = new FormData();
 
-    // const today = moment().format('YYYY-MM-DD');
-    const today = '2023-03-10';
+    const today = moment().format('YYYY-MM-DD');
     const hour = randTime(17, 20);
     const minute = randTime(10, 55);
     const seconds = randTime(10, 55);
