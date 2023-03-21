@@ -132,3 +132,4 @@ dist
 .nfs*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node,Linux
+req.http
