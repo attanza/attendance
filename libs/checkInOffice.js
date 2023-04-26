@@ -9,7 +9,7 @@ export const checkInOffice = async () => {
     const token = await getToken();
     const today = moment().format('YYYY-MM-DD');
     const hour = '07';
-    const minute = randTime(10, 28);
+    const minute = randTime(37, 57);
     const seconds = randTime(10, 55);
     const time = `${hour}:${minute}:${seconds}`;
     const NIK = process.env.NIK;
