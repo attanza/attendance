@@ -5,6 +5,7 @@ import 'dotenv/config';
 import { checkInOffice } from './libs/checkInOffice.js';
 import { workDay } from './libs/workDay.js';
 import { checkOutOffice } from './libs/checkOutOffice.js';
+import { getCredentials } from './libs/getCredentials.js';
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minutes
@@ -23,8 +24,17 @@ app.get('/', (req, res) => res.send('Hello World!'));
 app.post('/check-in', async (req, res) => {
   try {
     if (workDay()) {
-      const resp = await checkInOffice();
-      res.json(resp);
+      const { niks, passwords } = getCredentials();
+      const promises = [];
+      if (niks && niks.length > 0) {
+        for (let i = 0; i < niks.length; i++) {
+          promises.push(checkInOffice(niks[i], passwords[i]));
+        }
+        await Promise.all[promises];
+      } else {
+        res.send('no users');
+      }
+      res.send('Thank you!');
     } else {
       res.send('not working day');
     }
@@ -37,8 +47,18 @@ app.post('/check-in', async (req, res) => {
 app.post('/check-out', async (req, res) => {
   try {
     if (workDay()) {
-      const resp = await checkOutOffice();
-      res.json(resp);
+      const { niks, passwords } = getCredentials();
+
+      const promises = [];
+      if (niks && niks.length > 0) {
+        for (let i = 0; i < niks.length; i++) {
+          promises.push(checkOutOffice(niks[i], passwords[i]));
+        }
+        await Promise.all[promises];
+      } else {
+        res.send('no users');
+      }
+      res.send('Thank you!');
     } else {
       res.send('not working day');
     }

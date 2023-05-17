@@ -3,7 +3,7 @@ import FormData from 'form-data';
 import moment from 'moment';
 import { randTime } from './randTime.js';
 import { getToken } from './getToken.js';
-export const checkOutOffice = async () => {
+export const checkOutOffice = async (NIK, PASSWORD) => {
   try {
     const data = new FormData();
 
@@ -12,8 +12,7 @@ export const checkOutOffice = async () => {
     const minute = randTime(10, 55);
     const seconds = randTime(10, 55);
     const time = `${hour}:${minute}:${seconds}`;
-    const NIK = process.env.NIK;
-    const token = await getToken();
+    const token = await getToken(NIK, PASSWORD);
 
     data.append('begin_date', today);
     data.append('date', today);

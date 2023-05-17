@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export const getToken = async () => {
+export const getToken = async (username, password) => {
   const data = JSON.stringify({
     application_id: '6',
-    username: process.env.NIK,
-    password: process.env.PASSWORD,
+    username,
+    password,
   });
   const config = {
     method: 'post',
@@ -20,6 +20,6 @@ export const getToken = async () => {
     const resp = await axios(config).then((res) => res.data);
     return resp.access_token;
   } catch (error) {
-    console.log(error);
+    console.log('get token error: ', error.response);
   }
 };

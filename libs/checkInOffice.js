@@ -4,15 +4,14 @@ import FormData from 'form-data';
 
 import { randTime } from './randTime.js';
 import { getToken } from './getToken.js';
-export const checkInOffice = async () => {
+export const checkInOffice = async (NIK, PASSWORD) => {
   try {
-    const token = await getToken();
+    const token = await getToken(NIK, PASSWORD);
     const today = moment().format('YYYY-MM-DD');
     const hour = '07';
     const minute = randTime(37, 57);
     const seconds = randTime(10, 55);
     const time = `${hour}:${minute}:${seconds}`;
-    const NIK = process.env.NIK;
 
     const data = new FormData();
     data.append('begin_date', today);
@@ -47,7 +46,6 @@ export const checkInOffice = async () => {
       },
       data: data,
     };
-
     const resp = await axios(config).then((res) => res.data);
     return resp;
   } catch (error) {
