@@ -1,5 +1,5 @@
 import moment from 'moment';
-import holidays from '../holidays.json' assert { type: 'json' };
+import { holidays } from './holidays.js';
 
 export const workDay = () => {
   // Check if not holiday
