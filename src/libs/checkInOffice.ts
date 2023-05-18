@@ -1,10 +1,13 @@
 import axios from 'axios';
 import moment from 'moment';
 import FormData from 'form-data';
+import { getToken } from './getToken';
+import { randTime } from './randTime';
 
-import { randTime } from './randTime.js';
-import { getToken } from './getToken.js';
-export const checkInOffice = async (NIK, PASSWORD) => {
+export const checkInOffice = async (
+  NIK: string,
+  PASSWORD: string
+): Promise<any> => {
   try {
     const token = await getToken(NIK, PASSWORD);
     const today = moment().format('YYYY-MM-DD');
@@ -49,7 +52,6 @@ export const checkInOffice = async (NIK, PASSWORD) => {
     const resp = await axios(config).then((res) => res.data);
     return resp;
   } catch (error) {
-    console.log(error.data);
     throw error;
   }
 };

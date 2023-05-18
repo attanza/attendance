@@ -1,11 +1,11 @@
-import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import 'dotenv/config';
-import { checkInOffice } from './libs/checkInOffice.js';
-import { workDay } from './libs/workDay.js';
-import { checkOutOffice } from './libs/checkOutOffice.js';
-import { getCredentials } from './libs/getCredentials.js';
+import { workDay } from './libs/workDay';
+import { getCredentials } from './libs/getCredentials';
+import { checkInOffice } from './libs/checkInOffice';
+import { checkOutOffice } from './libs/checkOutOffice';
+import express, { Request, Response, NextFunction } from 'express';
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minutes
@@ -20,16 +20,17 @@ app.disable('x-powered-by');
 app.use(helmet());
 app.use(limiter);
 
-app.get('/', (req, res) => res.send('Hello World!'));
-app.post('/check-in', async (req, res) => {
+app.get('/', (_: Request, res: Response) => res.send('Hello World!'));
+app.post('/check-in', async (_: Request, res: Response) => {
   try {
     if (workDay()) {
       const { niks, passwords } = getCredentials();
-      const promises = [];
+      const promises: any = [];
       if (niks && niks.length > 0) {
         for (let i = 0; i < niks.length; i++) {
           promises.push(checkInOffice(niks[i], passwords[i]));
         }
+        // @ts-ignore
         await Promise.all[promises];
       } else {
         res.send('no users');
@@ -44,7 +45,7 @@ app.post('/check-in', async (req, res) => {
   }
 });
 
-app.post('/check-out', async (req, res) => {
+app.post('/check-out', async (_: Request, res: Response) => {
   try {
     if (workDay()) {
       const { niks, passwords } = getCredentials();
@@ -54,6 +55,7 @@ app.post('/check-out', async (req, res) => {
         for (let i = 0; i < niks.length; i++) {
           promises.push(checkOutOffice(niks[i], passwords[i]));
         }
+        // @ts-ignore
         await Promise.all[promises];
       } else {
         res.send('no users');
@@ -69,12 +71,12 @@ app.post('/check-out', async (req, res) => {
 });
 
 // custom 404
-app.use((req, res, next) => {
+app.use((_: Request, res: Response, next: NextFunction) => {
   res.status(404).send("Sorry can't find that!");
 });
 
 // custom error handler
-app.use((err, req, res, next) => {
+app.use((err: any, _: Request, res: Response) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });

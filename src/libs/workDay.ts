@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { holidays } from './holidays.js';
+import { holidays } from './holidays';
 
 export const workDay = () => {
   // Check if not holiday

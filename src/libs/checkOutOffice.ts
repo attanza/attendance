@@ -1,9 +1,9 @@
 import axios from 'axios';
 import FormData from 'form-data';
 import moment from 'moment';
-import { randTime } from './randTime.js';
-import { getToken } from './getToken.js';
-export const checkOutOffice = async (NIK, PASSWORD) => {
+import { randTime } from './randTime';
+import { getToken } from './getToken';
+export const checkOutOffice = async (NIK: string, PASSWORD: string) => {
   try {
     const data = new FormData();
 
@@ -50,7 +50,7 @@ export const checkOutOffice = async (NIK, PASSWORD) => {
 
     const resp = await axios(config).then((res) => res.data);
     return resp;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     throw error;
   }

@@ -1,4 +1,4 @@
-export const holidays = [
+export const holidays: Array<string> = [
   '22-03-2023',
   '23-03-2023',
   '07-04-2023',
