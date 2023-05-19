@@ -20,6 +20,6 @@ export const getToken = async (username: string, password: string) => {
     const resp = await axios(config).then((res) => res.data);
     return resp.access_token;
   } catch (error: any) {
-    console.log('get token error: ', error.response);
+    console.log('get token error: ', error.response.data);
   }
 };
