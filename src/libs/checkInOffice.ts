@@ -13,7 +13,7 @@ export const checkInOffice = async (
     if (token) {
       const today = moment().format('YYYY-MM-DD');
       const hour = '07';
-      const minute = randTime(37, 57);
+      const minute = randTime(2, 30);
       const seconds = randTime(10, 55);
       const time = `${hour}:${minute}:${seconds}`;
 
