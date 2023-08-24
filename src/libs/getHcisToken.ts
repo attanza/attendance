@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getToken = async (username: string, password: string) => {
+export const getHcisToken = async (username: string, password: string) => {
   const data = JSON.stringify({
     application_id: '6',
     username,

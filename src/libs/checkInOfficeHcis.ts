@@ -1,15 +1,15 @@
 import axios from 'axios';
 import moment from 'moment';
 import FormData from 'form-data';
-import { getToken } from './getToken';
+import { getHcisToken } from './getHcisToken';
 import { randTime } from './randTime';
 
-export const checkInOffice = async (
+export const checkInOfficeHcis = async (
   NIK: string,
   PASSWORD: string
 ): Promise<any> => {
   try {
-    const token = await getToken(NIK, PASSWORD);
+    const token = await getHcisToken(NIK, PASSWORD);
     if (token) {
       const today = moment().format('YYYY-MM-DD');
       const hour = '07';
@@ -51,8 +51,6 @@ export const checkInOffice = async (
         data: data,
       };
       const resp = await axios(config).then((res) => res.data);
-      console.log(resp);
-
       return resp;
     } else {
       console.log(`${NIK} failed to authenticate`);

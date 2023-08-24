@@ -3,9 +3,10 @@ import helmet from 'helmet';
 import 'dotenv/config';
 import { workDay } from './libs/workDay';
 import { getCredentials } from './libs/getCredentials';
-import { checkInOffice } from './libs/checkInOffice';
 import { checkOutOffice } from './libs/checkOutOffice';
 import express, { Request, Response, NextFunction } from 'express';
+import { checkInOfficeHcis } from './libs/checkInOfficeHcis';
+import { checkInOfficeHcms } from './libs/checkInOfficeHcms';
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minutes
@@ -28,7 +29,8 @@ app.post('/check-in', async (_: Request, res: Response) => {
       const promises: any = [];
       if (niks && niks.length > 0) {
         for (let i = 0; i < niks.length; i++) {
-          promises.push(checkInOffice(niks[i], passwords[i]));
+          // promises.push(checkInOfficeHcis(niks[i], passwords[i]));
+          promises.push(checkInOfficeHcms(niks[i], passwords[i]));
         }
         // @ts-ignore
         await Promise.all[promises];
@@ -81,5 +83,5 @@ app.use((err: any, _: Request, res: Response) => {
   res.status(500).send('Something broke!');
 });
 app.listen(port, () =>
-  console.log(`Example app listening on http://localhost:${port}`)
+  console.log(`App listening on http://localhost:${port}`)
 );

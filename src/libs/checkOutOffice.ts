@@ -2,10 +2,10 @@ import axios from 'axios';
 import FormData from 'form-data';
 import moment from 'moment';
 import { randTime } from './randTime';
-import { getToken } from './getToken';
+import { getHcisToken } from './getHcisToken';
 export const checkOutOffice = async (NIK: string, PASSWORD: string) => {
   try {
-    const token = await getToken(NIK, PASSWORD);
+    const token = await getHcisToken(NIK, PASSWORD);
     if (token) {
       const data = new FormData();
 

@@ -55,22 +55,23 @@ var axios_1 = __importDefault(require("axios"));
 var form_data_1 = __importDefault(require("form-data"));
 var moment_1 = __importDefault(require("moment"));
 var randTime_1 = require("./randTime");
-var getToken_1 = require("./getToken");
+var getHcisToken_1 = require("./getHcisToken");
 var checkOutOffice = function (NIK, PASSWORD) { return __awaiter(void 0, void 0, void 0, function () {
-    var data, today, hour, minute, seconds, time, token, config, resp, error_1;
+    var token, data, today, hour, minute, seconds, time, config, resp, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
+                _a.trys.push([0, 5, , 6]);
+                return [4 /*yield*/, (0, getHcisToken_1.getHcisToken)(NIK, PASSWORD)];
+            case 1:
+                token = _a.sent();
+                if (!token) return [3 /*break*/, 3];
                 data = new form_data_1.default();
                 today = (0, moment_1.default)().format('YYYY-MM-DD');
                 hour = (0, randTime_1.randTime)(18, 20);
                 minute = (0, randTime_1.randTime)(10, 55);
                 seconds = (0, randTime_1.randTime)(10, 55);
                 time = "".concat(hour, ":").concat(minute, ":").concat(seconds);
-                return [4 /*yield*/, (0, getToken_1.getToken)(NIK, PASSWORD)];
-            case 1:
-                token = _a.sent();
                 data.append('begin_date', today);
                 data.append('date', today);
                 data.append('time', time);
@@ -102,12 +103,17 @@ var checkOutOffice = function (NIK, PASSWORD) { return __awaiter(void 0, void 0,
                 return [4 /*yield*/, (0, axios_1.default)(config).then(function (res) { return res.data; })];
             case 2:
                 resp = _a.sent();
+                console.log(resp);
                 return [2 /*return*/, resp];
             case 3:
+                console.log("".concat(NIK, " failed to authenticate"));
+                _a.label = 4;
+            case 4: return [3 /*break*/, 6];
+            case 5:
                 error_1 = _a.sent();
                 console.log(error_1);
                 throw error_1;
-            case 4: return [2 /*return*/];
+            case 6: return [2 /*return*/];
         }
     });
 }); };

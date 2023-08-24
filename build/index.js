@@ -44,9 +44,10 @@ var helmet_1 = __importDefault(require("helmet"));
 require("dotenv/config");
 var workDay_1 = require("./libs/workDay");
 var getCredentials_1 = require("./libs/getCredentials");
-var checkInOffice_1 = require("./libs/checkInOffice");
 var checkOutOffice_1 = require("./libs/checkOutOffice");
 var express_1 = __importDefault(require("express"));
+var checkInOfficeHcis_1 = require("./libs/checkInOfficeHcis");
+var checkInOfficeHcms_1 = require("./libs/checkInOfficeHcms");
 var limiter = (0, express_rate_limit_1.default)({
     windowMs: 1 * 60 * 1000,
     max: 10,
@@ -70,7 +71,8 @@ app.post('/check-in', function (_, res) { return __awaiter(void 0, void 0, void 
                 promises = [];
                 if (!(niks && niks.length > 0)) return [3 /*break*/, 2];
                 for (i = 0; i < niks.length; i++) {
-                    promises.push((0, checkInOffice_1.checkInOffice)(niks[i], passwords[i]));
+                    promises.push((0, checkInOfficeHcis_1.checkInOfficeHcis)(niks[i], passwords[i]));
+                    promises.push((0, checkInOfficeHcms_1.checkInOfficeHcms)(niks[i], passwords[i]));
                 }
                 // @ts-ignore
                 return [4 /*yield*/, Promise.all[promises]];
@@ -145,5 +147,5 @@ app.use(function (err, _, res) {
     res.status(500).send('Something broke!');
 });
 app.listen(port, function () {
-    return console.log("Example app listening on http://localhost:".concat(port));
+    return console.log("App listening on http://localhost:".concat(port));
 });
