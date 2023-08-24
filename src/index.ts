@@ -7,6 +7,7 @@ import { checkOutOffice } from './libs/checkOutOffice';
 import express, { Request, Response, NextFunction } from 'express';
 import { checkInOfficeHcis } from './libs/checkInOfficeHcis';
 import { checkInOfficeHcms } from './libs/checkInOfficeHcms';
+import { checkHcmsStatus } from './libs/checkHcmsStatus';
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minutes
@@ -65,6 +66,25 @@ app.post('/check-out', async (_: Request, res: Response) => {
       res.send('Thank you!');
     } else {
       res.send('not working day');
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+app.post('/check-status', async (_: Request, res: Response) => {
+  try {
+    const { niks, passwords } = getCredentials();
+
+    const promises = [];
+    if (niks && niks.length > 0) {
+      for (let i = 0; i < niks.length; i++) {
+        promises.push(checkHcmsStatus(niks[i], passwords[i]));
+      }
+      // @ts-ignore
+      await Promise.all[promises];
+    } else {
+      res.send('no users');
     }
   } catch (error) {
     console.log(error);

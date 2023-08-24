@@ -14,7 +14,7 @@ export const checkInOfficeHcms = async (
       data.append('guid', token);
       data.append(
         'data',
-        '{\n    "attendance_id": "",\n    "attendance_type_id": "1",\n    "timezone": "Asia/Jakarta",\n    "latitude": -6.1929385,\n    "longitude": 106.84806773,\n    "file_evidence": "",\n    "quiz": {\n        "soal_1": "Sehat",\n        "soal_2": "WFO",\n        "soal_3": "JALAN SALEMBA RAYA"\n    }\n}'
+        '{\n    "attendance_id": "",\n    "attendance_type_id": "1",\n    "timezone": "Asia/Jakarta",\n    "latitude": -6.193209024733559,\n    "longitude": 106.84830795087586,\n    "file_evidence": "",\n    "quiz": {\n        "soal_1": "Sehat",\n        "soal_2": "WFO",\n        "soal_3": "JALAN SALEMBA RAYA"\n    }\n}'
       );
 
       let config = {
