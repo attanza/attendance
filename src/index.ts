@@ -3,11 +3,10 @@ import helmet from 'helmet';
 import 'dotenv/config';
 import { workDay } from './libs/workDay';
 import { getCredentials } from './libs/getCredentials';
-import { checkOutOffice } from './libs/checkOutOffice';
 import express, { Request, Response, NextFunction } from 'express';
-import { checkInOfficeHcis } from './libs/checkInOfficeHcis';
 import { checkInOfficeHcms } from './libs/checkInOfficeHcms';
-import { checkHcmsStatus } from './libs/checkHcmsStatus';
+import { checkOutOfficeHcms } from './libs/checkOutOfficeHcms';
+import { randTime } from './libs/randTime';
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minutes
@@ -19,6 +18,7 @@ const limiter = rateLimit({
 const app = express();
 const port = 10000;
 app.disable('x-powered-by');
+app.set('trust proxy', true);
 app.use(helmet());
 app.use(limiter);
 
@@ -30,11 +30,13 @@ app.post('/check-in', async (_: Request, res: Response) => {
       const promises: any = [];
       if (niks && niks.length > 0) {
         for (let i = 0; i < niks.length; i++) {
-          // promises.push(checkInOfficeHcis(niks[i], passwords[i]));
           promises.push(checkInOfficeHcms(niks[i], passwords[i]));
         }
-        // @ts-ignore
-        await Promise.all[promises];
+        const timeout = setTimeout(async function () {
+          // @ts-ignore
+          await Promise.all[promises];
+        }, 1000 * 60 * randTime(2, 6));
+        clearTimeout(timeout);
       } else {
         res.send('no users');
       }
@@ -53,38 +55,22 @@ app.post('/check-out', async (_: Request, res: Response) => {
     if (workDay()) {
       const { niks, passwords } = getCredentials();
 
-      const promises = [];
+      const promises: any = [];
       if (niks && niks.length > 0) {
         for (let i = 0; i < niks.length; i++) {
-          promises.push(checkOutOffice(niks[i], passwords[i]));
+          promises.push(checkOutOfficeHcms(niks[i], passwords[i]));
         }
-        // @ts-ignore
-        await Promise.all[promises];
+        const timeout = setTimeout(async function () {
+          // @ts-ignore
+          await Promise.all[promises];
+        }, 1000 * 60 * randTime(2, 6));
+        clearTimeout(timeout);
       } else {
         res.send('no users');
       }
       res.send('Thank you!');
     } else {
       res.send('not working day');
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
-  }
-});
-app.post('/check-status', async (_: Request, res: Response) => {
-  try {
-    const { niks, passwords } = getCredentials();
-
-    const promises = [];
-    if (niks && niks.length > 0) {
-      for (let i = 0; i < niks.length; i++) {
-        promises.push(checkHcmsStatus(niks[i], passwords[i]));
-      }
-      // @ts-ignore
-      await Promise.all[promises];
-    } else {
-      res.send('no users');
     }
   } catch (error) {
     console.log(error);

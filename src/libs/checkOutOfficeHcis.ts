@@ -3,7 +3,7 @@ import FormData from 'form-data';
 import moment from 'moment';
 import { randTime } from './randTime';
 import { getHcisToken } from './getHcisToken';
-export const checkOutOffice = async (NIK: string, PASSWORD: string) => {
+export const checkOutOfficeHcis = async (NIK: string, PASSWORD: string) => {
   try {
     const token = await getHcisToken(NIK, PASSWORD);
     if (token) {
