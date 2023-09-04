@@ -32,14 +32,14 @@ app.post('/check-in', async (_: Request, res: Response) => {
         for (let i = 0; i < niks.length; i++) {
           promises.push(checkInOfficeHcms(niks[i], passwords[i]));
         }
-        const timeout = setTimeout(async function () {
+        setTimeout(async function () {
           // @ts-ignore
           await Promise.all[promises];
         }, 1000 * 60 * randTime(2, 6));
-        clearTimeout(timeout);
       } else {
         res.send('no users');
       }
+
       res.send('Thank you!');
     } else {
       res.send('not working day');
@@ -60,11 +60,10 @@ app.post('/check-out', async (_: Request, res: Response) => {
         for (let i = 0; i < niks.length; i++) {
           promises.push(checkOutOfficeHcms(niks[i], passwords[i]));
         }
-        const timeout = setTimeout(async function () {
+        setTimeout(async function () {
           // @ts-ignore
           await Promise.all[promises];
         }, 1000 * 60 * randTime(2, 6));
-        clearTimeout(timeout);
       } else {
         res.send('no users');
       }
