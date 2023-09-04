@@ -27,19 +27,20 @@ app.post('/check-in', async (_: Request, res: Response) => {
   try {
     if (workDay()) {
       const { niks, passwords } = getCredentials();
-      const promises: any = [];
+      console.log('start request: ', new Date());
       if (niks && niks.length > 0) {
-        for (let i = 0; i < niks.length; i++) {
-          promises.push(checkInOfficeHcms(niks[i], passwords[i]));
-        }
+        const promises: any = [];
+        const timeoutSec = 1000 * 60 * randTime(2, 6);
         setTimeout(async function () {
-          // @ts-ignore
-          await Promise.all[promises];
-        }, 1000 * 60 * randTime(2, 6));
+          for (let i = 0; i < niks.length; i++) {
+            promises.push(checkInOfficeHcms(niks[i], passwords[i]));
+          }
+          await Promise.all(promises);
+          console.log('request finished at: ', new Date());
+        }, timeoutSec);
       } else {
         res.send('no users');
       }
-
       res.send('Thank you!');
     } else {
       res.send('not working day');
@@ -54,16 +55,17 @@ app.post('/check-out', async (_: Request, res: Response) => {
   try {
     if (workDay()) {
       const { niks, passwords } = getCredentials();
-
-      const promises: any = [];
+      console.log('start request: ', new Date());
       if (niks && niks.length > 0) {
-        for (let i = 0; i < niks.length; i++) {
-          promises.push(checkOutOfficeHcms(niks[i], passwords[i]));
-        }
+        const promises: any = [];
+        const timeoutSec = 1000 * 60 * randTime(2, 6);
         setTimeout(async function () {
-          // @ts-ignore
-          await Promise.all[promises];
-        }, 1000 * 60 * randTime(2, 6));
+          for (let i = 0; i < niks.length; i++) {
+            promises.push(checkOutOfficeHcms(niks[i], passwords[i]));
+          }
+          await Promise.all(promises);
+          console.log('request finished at: ', new Date());
+        }, timeoutSec);
       } else {
         res.send('no users');
       }
